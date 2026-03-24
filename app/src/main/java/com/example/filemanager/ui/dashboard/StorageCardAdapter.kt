@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.filemanager.databinding.ItemStorageCardBinding
 import com.example.filemanager.model.StorageCard
 
+/** Horizontal list of internal / SD storage cards with usage bars. */
 class StorageCardAdapter(
     private val onClick: (StorageCard) -> Unit
 ) : RecyclerView.Adapter<StorageCardAdapter.StorageViewHolder>() {

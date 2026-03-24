@@ -11,6 +11,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/** Builds internal + SD StorageCards using StatFs and StorageManager for removable volumes. */
 @Singleton
 class StorageVolumeProvider @Inject constructor(
     @ApplicationContext private val context: Context

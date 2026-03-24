@@ -23,12 +23,17 @@ import com.example.filemanager.utils.FileMenuHelper
 import com.example.filemanager.utils.applySystemBarPadding
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * Home dashboard: storage cards, category grid, recent files list, pull-to-refresh, and overflow actions
+ * that may require a system IntentSender step for MediaStore rename/delete (see `FileMenuHelper`).
+ */
 @AndroidEntryPoint
 class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
     private val viewModel: DashboardViewModel by viewModels()
 
+    // MediaStore rename/delete can require a one-shot system permission; retry runs after user approves.
     private var pendingRecoverableRetry: (() -> Unit)? = null
 
     private val recoverableLauncher = registerForActivityResult(
@@ -113,6 +118,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         binding.rvFiles.layoutManager = LinearLayoutManager(requireContext())
         binding.rvFiles.adapter = fileAdapter
 
+        // Pull-to-refresh: reload recent files + storage stats (DashboardViewModel).
         binding.swipeRefresh.setColorSchemeResources(R.color.primary, R.color.primary_dark)
         binding.swipeRefresh.setProgressBackgroundColorSchemeResource(R.color.surface)
         binding.swipeRefresh.setOnRefreshListener {

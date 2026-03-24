@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.filemanager.databinding.ItemCategoryBinding
 import com.example.filemanager.model.CategoryItem
 
+/** Dashboard grid of category shortcuts (Pictures, Videos, …). */
 class CategoryAdapter(
     private val onClick: (CategoryItem) -> Unit
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {

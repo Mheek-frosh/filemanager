@@ -11,6 +11,7 @@ import com.example.filemanager.databinding.FragmentLoginBinding
 import com.example.filemanager.utils.applySystemBarPadding
 import dagger.hilt.android.AndroidEntryPoint
 
+/** Entry screen: validates credentials or navigates to dashboard if already logged in. */
 @AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
     private var _binding: FragmentLoginBinding? = null

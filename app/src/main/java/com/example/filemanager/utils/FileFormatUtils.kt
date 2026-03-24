@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/** Human-readable file size and time labels for lists and detail screens. */
 object FileFormatUtils {
     fun sizeToDisplay(sizeBytes: Long): String {
         if (sizeBytes <= 0) return "0 B"

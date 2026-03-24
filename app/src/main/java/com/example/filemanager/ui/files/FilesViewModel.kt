@@ -8,6 +8,10 @@ import com.example.filemanager.model.FileItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+/**
+ * Backing data for FileListFragment: category listing from FileRepository, or directory listing
+ * when `storageRootPath` is non-empty (browse / SD).
+ */
 @HiltViewModel
 class FilesViewModel @Inject constructor(
     private val repository: FileRepository

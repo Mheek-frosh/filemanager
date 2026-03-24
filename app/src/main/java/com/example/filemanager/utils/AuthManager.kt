@@ -5,6 +5,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/** Simple email/password auth backed by SharedPreferences (demo / local only). */
 @Singleton
 class AuthManager @Inject constructor(
     @ApplicationContext private val context: Context

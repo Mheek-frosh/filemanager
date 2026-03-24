@@ -15,6 +15,10 @@ import com.example.filemanager.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+/**
+ * Host activity: Navigation Component (nav host fragment), Material navigation drawer,
+ * and routes from the drawer to FileListFragment by category or storage path.
+ */
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -32,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         val navHost = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHost.navController
 
+        // Drawer: each item opens FileListFragment with a categoryId (or "browse" + storage path for internal/SD).
         binding.navView.setNavigationItemSelectedListener { item ->
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             when (item.itemId) {
@@ -65,6 +70,7 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+        // Lock drawer on auth screens; sync checked item when returning to dashboard.
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.loginFragment, R.id.signUpFragment -> {

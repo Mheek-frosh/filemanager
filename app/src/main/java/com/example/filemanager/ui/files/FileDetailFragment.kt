@@ -27,6 +27,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import java.io.File
 
+/**
+ * File / app preview: images (Glide), video (VideoView + MediaController), audio (MediaPlayer + seek/repeat).
+ * `file://` paths are exposed as content URIs via FileProvider so Glide/player can open them safely.
+ */
 class FileDetailFragment : Fragment(R.layout.fragment_file_detail) {
     private var _binding: FragmentFileDetailBinding? = null
     private val binding get() = _binding!!
@@ -41,6 +45,7 @@ class FileDetailFragment : Fragment(R.layout.fragment_file_detail) {
     private var userSeekingAudio = false
     private var audioRepeatOne = false
 
+    // Pause/duck playback when another app takes audio focus (calls, other music players).
     private val audioFocusChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
         when (focusChange) {
             AudioManager.AUDIOFOCUS_LOSS,
@@ -84,6 +89,7 @@ class FileDetailFragment : Fragment(R.layout.fragment_file_detail) {
         _binding = null
     }
 
+    /** Chooses preview mode from MIME, filename, or special cases (installed app icon). */
     private fun bindPreview() {
         hideAllPreview()
         if (args.fileType.startsWith("APP") && args.fileUri.startsWith("package:")) {
@@ -119,6 +125,7 @@ class FileDetailFragment : Fragment(R.layout.fragment_file_detail) {
         }
     }
 
+    /** MediaStore and content URIs pass through; raw `file://` paths get a grantable content URI via FileProvider. */
     private fun uriForMedia(uri: Uri): Uri {
         if (uri.scheme != "file") return uri
         val path = uri.path ?: return uri
@@ -176,6 +183,7 @@ class FileDetailFragment : Fragment(R.layout.fragment_file_detail) {
         binding.videoView.requestFocus()
     }
 
+    /** In-app music UI: audio focus, prepareAsync, seek ±10s, repeat-one; metadata is shown inside the player panel. */
     private fun showAudio(uri: Uri) {
         hideAllPreview()
         binding.detailMetadataSection.visibility = View.GONE

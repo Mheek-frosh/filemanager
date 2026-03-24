@@ -12,6 +12,7 @@ import com.example.filemanager.model.StorageCard
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+/** Dashboard state: recent files for "New files" and storage cards from StorageVolumeProvider. */
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     private val fileRepository: FileRepository,
@@ -38,10 +39,12 @@ class DashboardViewModel @Inject constructor(
         _storageCards.value = storageVolumeProvider.getStorageCards()
     }
 
+    /** Re-read free/total space and SD availability (used after pull-to-refresh). */
     fun refreshStorage() {
         _storageCards.value = storageVolumeProvider.getStorageCards()
     }
 
+    /** Loads merged recent media; falls back to placeholder items if the query returns empty (demo UX). */
     fun loadRecentFiles() {
         val files = fileRepository.getRecentFiles(30)
         _recentFiles.value = if (files.isNotEmpty()) {

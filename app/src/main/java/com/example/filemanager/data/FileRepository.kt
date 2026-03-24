@@ -13,10 +13,16 @@ import java.net.URLConnection
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * Single source for file listings: MediaStore queries (content Uri) for gallery-style data,
+ * and direct filesystem paths for browsed folders. `localPath` is set only for filesystem items;
+ * MediaStore rows use `contentUri` only (needed for rename/delete/share on Android 10+).
+ */
 @Singleton
 class FileRepository @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
+    /** Recent media: merges images, videos, and downloads, then sorts by date added. */
     fun getRecentFiles(limit: Int = 20): List<FileItem> {
         val files = mutableListOf<FileItem>()
         files += queryImages(limit)
@@ -25,6 +31,7 @@ class FileRepository @Inject constructor(
         return files.sortedByDescending { it.dateAddedSeconds }.take(limit)
     }
 
+    /** Routes dashboard categories and drawer sections to the right MediaStore or file query. */
     fun getFilesForCategory(categoryId: String): List<FileItem> {
         val list = when (categoryId) {
             "pictures" -> queryImages(MEDIA_QUERY_LIMIT)
@@ -196,6 +203,7 @@ class FileRepository @Inject constructor(
         return result
     }
 
+    /** Maps a MediaStore cursor row to FileItem; collection + _ID builds the public content Uri. */
     private fun fillFromCursor(
         cursor: android.database.Cursor,
         collection: Uri,

@@ -4,6 +4,7 @@ import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
+/** Applies status/navigation bar insets as padding so content stays below the system bars. */
 fun View.applySystemBarPadding(alsoBottom: Boolean = true) {
     ViewCompat.setOnApplyWindowInsetsListener(this) { v, insets ->
         val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

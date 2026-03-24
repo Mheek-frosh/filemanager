@@ -7,6 +7,7 @@ import com.example.filemanager.utils.AuthManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+/** Thin wrapper around AuthManager for login/sign-up and session state. */
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val authManager: AuthManager

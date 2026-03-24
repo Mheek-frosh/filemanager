@@ -10,6 +10,7 @@ import com.example.filemanager.databinding.FragmentSignUpBinding
 import com.example.filemanager.utils.applySystemBarPadding
 import dagger.hilt.android.AndroidEntryPoint
 
+/** Registration form; persists credentials via AuthViewModel / AuthManager. */
 @AndroidEntryPoint
 class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     private var _binding: FragmentSignUpBinding? = null

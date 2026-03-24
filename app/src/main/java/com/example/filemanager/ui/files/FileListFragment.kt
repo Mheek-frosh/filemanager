@@ -19,6 +19,10 @@ import com.example.filemanager.utils.FileMenuHelper
 import com.example.filemanager.utils.applySystemBarPadding
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * Category or folder listing: list, photo grid, video grid, or apps list depending on navigation args.
+ * Shares the same MediaStore recoverable flow as the dashboard for overflow menu actions.
+ */
 @AndroidEntryPoint
 class FileListFragment : Fragment(R.layout.fragment_file_list) {
     private var _binding: FragmentFileListBinding? = null
@@ -26,7 +30,7 @@ class FileListFragment : Fragment(R.layout.fragment_file_list) {
     private val args: FileListFragmentArgs by navArgs()
     private val viewModel: FilesViewModel by viewModels()
 
-    private var pendingRecoverableRetry: (() -> Unit)? = null
+    private var pendingRecoverableRetry: (() -> Unit)? = null // paired with FileMenuHelper MediaStore writes
 
     private val recoverableLauncher = registerForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()
