@@ -36,6 +36,10 @@
     <string name="action_properties">Properties</string>
     <string name="action_not_available">This action isn\'t available for this item</string>
     <string name="delete_confirm_message">Delete \"%1$s\"? This cannot be undone.</string>
+    <string name="rename_dialog_title">Rename file</string>
+    <string name="rename_hint">File name</string>
+    <string name="rename_empty">Enter a file name</string>
+    <string name="delete_dialog_title">Delete file</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>

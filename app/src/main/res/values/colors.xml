@@ -16,4 +16,5 @@
     <color name="audio_album_gradient_start">#D4DCFF</color>
     <color name="audio_album_gradient_end">#B8C5FF</color>
     <color name="audio_chip_bg">#335D7DF8</color>
+    <color name="error">#E53935</color>
 </resources>

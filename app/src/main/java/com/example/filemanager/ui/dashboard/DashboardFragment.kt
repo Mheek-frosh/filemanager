@@ -1,10 +1,13 @@
 package com.example.filemanager.ui.dashboard
 
 import android.Manifest
+import android.app.Activity
+import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -25,6 +28,22 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
     private val viewModel: DashboardViewModel by viewModels()
+
+    private var pendingRecoverableRetry: (() -> Unit)? = null
+
+    private val recoverableLauncher = registerForActivityResult(
+        ActivityResultContracts.StartIntentSenderForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            pendingRecoverableRetry?.invoke()
+        }
+        pendingRecoverableRetry = null
+    }
+
+    private fun launchRecoverable(sender: IntentSender, retry: () -> Unit) {
+        pendingRecoverableRetry = retry
+        recoverableLauncher.launch(IntentSenderRequest.Builder(sender).build())
+    }
 
     private val storageAdapter = StorageCardAdapter { card ->
         if (!card.available || card.rootPath == null) return@StorageCardAdapter
@@ -57,9 +76,13 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             findNavController().navigate(action)
         },
         onMoreClick = { item, anchor ->
-            FileMenuHelper.show(this, anchor, item) {
-                viewModel.loadRecentFiles()
-            }
+            FileMenuHelper.show(
+                this,
+                anchor,
+                item,
+                onChanged = { viewModel.loadRecentFiles() },
+                launchRecoverable = { sender, retry -> launchRecoverable(sender, retry) }
+            )
         }
     )
 

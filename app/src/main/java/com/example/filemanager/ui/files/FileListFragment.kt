@@ -1,7 +1,11 @@
 package com.example.filemanager.ui.files
 
+import android.app.Activity
+import android.content.IntentSender
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -21,6 +25,22 @@ class FileListFragment : Fragment(R.layout.fragment_file_list) {
     private val binding get() = _binding!!
     private val args: FileListFragmentArgs by navArgs()
     private val viewModel: FilesViewModel by viewModels()
+
+    private var pendingRecoverableRetry: (() -> Unit)? = null
+
+    private val recoverableLauncher = registerForActivityResult(
+        ActivityResultContracts.StartIntentSenderForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            pendingRecoverableRetry?.invoke()
+        }
+        pendingRecoverableRetry = null
+    }
+
+    private fun launchRecoverable(sender: IntentSender, retry: () -> Unit) {
+        pendingRecoverableRetry = retry
+        recoverableLauncher.launch(IntentSenderRequest.Builder(sender).build())
+    }
 
     private val onReload: () -> Unit = {
         viewModel.load(args.categoryId, args.storageRootPath)
@@ -52,25 +72,55 @@ class FileListFragment : Fragment(R.layout.fragment_file_list) {
             }
         },
         onMoreClick = { item, anchor ->
-            FileMenuHelper.show(this, anchor, item, onReload)
+            FileMenuHelper.show(
+                this,
+                anchor,
+                item,
+                onChanged = onReload,
+                launchRecoverable = { sender, retry -> launchRecoverable(sender, retry) }
+            )
         }
     )
 
     private val photoAdapter = MediaGridAdapter(
         isVideo = false,
         onOpen = { navigateToDetail(it) },
-        onMore = { item, anchor -> FileMenuHelper.show(this, anchor, item, onReload) }
+        onMore = { item, anchor ->
+            FileMenuHelper.show(
+                this,
+                anchor,
+                item,
+                onChanged = onReload,
+                launchRecoverable = { sender, retry -> launchRecoverable(sender, retry) }
+            )
+        }
     )
 
     private val videoAdapter = MediaGridAdapter(
         isVideo = true,
         onOpen = { navigateToDetail(it) },
-        onMore = { item, anchor -> FileMenuHelper.show(this, anchor, item, onReload) }
+        onMore = { item, anchor ->
+            FileMenuHelper.show(
+                this,
+                anchor,
+                item,
+                onChanged = onReload,
+                launchRecoverable = { sender, retry -> launchRecoverable(sender, retry) }
+            )
+        }
     )
 
     private val appsAdapter = AppsListAdapter(
         onOpen = { navigateToDetail(it) },
-        onMore = { item, anchor -> FileMenuHelper.show(this, anchor, item, onReload) }
+        onMore = { item, anchor ->
+            FileMenuHelper.show(
+                this,
+                anchor,
+                item,
+                onChanged = onReload,
+                launchRecoverable = { sender, retry -> launchRecoverable(sender, retry) }
+            )
+        }
     )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
