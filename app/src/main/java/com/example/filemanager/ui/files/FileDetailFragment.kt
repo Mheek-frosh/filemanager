@@ -39,6 +39,7 @@ class FileDetailFragment : Fragment(R.layout.fragment_file_detail) {
     private val audioSeekHandler = Handler(Looper.getMainLooper())
     private var audioSeekRunnable: Runnable? = null
     private var userSeekingAudio = false
+    private var audioRepeatOne = false
 
     private val audioFocusChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
         when (focusChange) {
@@ -86,6 +87,7 @@ class FileDetailFragment : Fragment(R.layout.fragment_file_detail) {
     private fun bindPreview() {
         hideAllPreview()
         if (args.fileType.startsWith("APP") && args.fileUri.startsWith("package:")) {
+            binding.detailMetadataSection.visibility = View.VISIBLE
             val pkg = args.fileUri.removePrefix("package:")
             binding.ivPreview.visibility = View.VISIBLE
             runCatching {
@@ -140,6 +142,7 @@ class FileDetailFragment : Fragment(R.layout.fragment_file_detail) {
 
     private fun showImage(uri: Uri) {
         hideAllPreview()
+        binding.detailMetadataSection.visibility = View.VISIBLE
         binding.ivPreview.visibility = View.VISIBLE
         binding.ivPreview.scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
         val loadUri = uriForMedia(uri)
@@ -156,6 +159,7 @@ class FileDetailFragment : Fragment(R.layout.fragment_file_detail) {
 
     private fun showVideo(uri: Uri) {
         hideAllPreview()
+        binding.detailMetadataSection.visibility = View.VISIBLE
         binding.videoView.visibility = View.VISIBLE
         val mc = MediaController(requireContext())
         mediaController = mc
@@ -174,9 +178,15 @@ class FileDetailFragment : Fragment(R.layout.fragment_file_detail) {
 
     private fun showAudio(uri: Uri) {
         hideAllPreview()
+        binding.detailMetadataSection.visibility = View.GONE
         binding.audioPlayerPanel.visibility = View.VISIBLE
         releaseAudioPlayer()
+        audioRepeatOne = false
+        updateRepeatButtonUi()
         userSeekingAudio = false
+        binding.tvAudioTitle.text = args.fileName
+        binding.tvAudioTitle.isSelected = true
+        binding.tvAudioMeta.text = audioMetaLine()
         binding.tvAudioCurrent.text = formatMs(0)
         binding.tvAudioDuration.text = formatMs(0)
         binding.sbAudio.max = 1000
@@ -201,6 +211,7 @@ class FileDetailFragment : Fragment(R.layout.fragment_file_detail) {
                 val dur = p.duration.coerceAtLeast(0)
                 b.sbAudio.max = dur.coerceAtLeast(1)
                 b.tvAudioDuration.text = formatMs(dur)
+                p.isLooping = audioRepeatOne
                 updateAudioPlayPauseIcon(true)
                 p.start()
                 startAudioSeekUpdates()
@@ -224,6 +235,13 @@ class FileDetailFragment : Fragment(R.layout.fragment_file_detail) {
         audioPlayer = mp
 
         binding.fabAudioPlayPause.setOnClickListener { toggleAudioPlayback() }
+        binding.btnAudioSkipBack.setOnClickListener { seekAudioBy(-10_000) }
+        binding.btnAudioSkipForward.setOnClickListener { seekAudioBy(10_000) }
+        binding.btnAudioRepeat.setOnClickListener {
+            audioRepeatOne = !audioRepeatOne
+            audioPlayer?.isLooping = audioRepeatOne
+            updateRepeatButtonUi()
+        }
         binding.sbAudio.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(sb: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
@@ -324,9 +342,35 @@ class FileDetailFragment : Fragment(R.layout.fragment_file_detail) {
         }
     }
 
+    private fun seekAudioBy(deltaMs: Int) {
+        val mp = audioPlayer ?: return
+        val dur = mp.duration.takeIf { it > 0 } ?: return
+        val newPos = (mp.currentPosition + deltaMs).coerceIn(0, dur)
+        mp.seekTo(newPos)
+        _binding?.let { b ->
+            b.sbAudio.progress = newPos
+            b.tvAudioCurrent.text = formatMs(newPos)
+        }
+    }
+
+    private fun updateRepeatButtonUi() {
+        val b = _binding ?: return
+        b.btnAudioRepeat.setImageResource(
+            if (audioRepeatOne) R.drawable.ic_repeat_one else R.drawable.ic_repeat
+        )
+    }
+
+    private fun audioMetaLine(): String {
+        val type = args.fileType.trim().ifEmpty { getString(R.string.audio_playing_badge) }
+        val size = FileFormatUtils.sizeToDisplay(args.fileSize)
+        val date = getString(R.string.today_label)
+        return "$type · $size · $date"
+    }
+
     private fun releaseAudioPlayer() {
         stopAudioSeekUpdates()
         userSeekingAudio = false
+        audioRepeatOne = false
         audioPlayer?.let { p ->
             runCatching {
                 if (p.isPlaying) p.stop()
@@ -335,6 +379,7 @@ class FileDetailFragment : Fragment(R.layout.fragment_file_detail) {
         }
         audioPlayer = null
         abandonAudioFocus()
+        _binding?.let { updateRepeatButtonUi() }
     }
 
     private fun updateAudioPlayPauseIcon(playing: Boolean) {
@@ -361,6 +406,7 @@ class FileDetailFragment : Fragment(R.layout.fragment_file_detail) {
 
     private fun showFallbackIcon() {
         hideAllPreview()
+        binding.detailMetadataSection.visibility = View.VISIBLE
         binding.ivPlaceholder.visibility = View.VISIBLE
         binding.ivPlaceholder.setImageResource(R.drawable.ic_description)
     }

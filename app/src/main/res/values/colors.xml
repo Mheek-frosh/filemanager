@@ -11,4 +11,9 @@
     <color name="divider_light">#E6EAF0</color>
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
+    <color name="audio_gradient_start">#EEF1FF</color>
+    <color name="audio_gradient_end">#F8F9FF</color>
+    <color name="audio_album_gradient_start">#D4DCFF</color>
+    <color name="audio_album_gradient_end">#B8C5FF</color>
+    <color name="audio_chip_bg">#335D7DF8</color>
 </resources>

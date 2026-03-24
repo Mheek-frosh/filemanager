@@ -62,6 +62,10 @@
     <string name="preview_video">Video playback</string>
     <string name="preview_audio">Audio playback</string>
     <string name="audio_now_playing">Now playing</string>
+    <string name="audio_playing_badge">Audio</string>
+    <string name="audio_skip_back">−10s</string>
+    <string name="audio_skip_forward">+10s</string>
+    <string name="audio_repeat">Repeat</string>
     <string name="play_audio">Play or pause audio</string>
     <string name="video_playback_failed">Could not play this video</string>
     <string name="audio_playback_failed">Could not play this audio file</string>

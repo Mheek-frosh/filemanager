@@ -68,79 +68,192 @@
                 android:id="@+id/audioPlayerPanel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_horizontal"
+                android:background="@drawable/bg_audio_player_gradient"
                 android:orientation="vertical"
-                android:paddingHorizontal="24dp"
-                android:paddingVertical="20dp"
                 android:visibility="gone">
-
-                <FrameLayout
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
-                    android:background="@drawable/bg_music_art_circle">
-
-                    <ImageView
-                        android:id="@+id/ivAudioArt"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/preview_audio"
-                        android:src="@drawable/ic_music_note" />
-                </FrameLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/audio_now_playing"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="13sp" />
-
-                <SeekBar
-                    android:id="@+id/sbAudio"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:paddingStart="0dp"
-                    android:paddingEnd="0dp"
-                    android:progressTint="@color/primary"
-                    android:thumbTint="@color/primary" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="-4dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:paddingHorizontal="22dp"
+                    android:paddingTop="4dp">
 
                     <TextView
-                        android:id="@+id/tvAudioCurrent"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="0:00"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/tvAudioDuration"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0:00"
+                        android:background="@drawable/bg_audio_chip"
+                        android:letterSpacing="0.06"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="5dp"
+                        android:text="@string/audio_playing_badge"
+                        android:textAllCaps="true"
+                        android:textColor="@color/primary"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvAudioTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:ellipsize="marquee"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:scrollHorizontally="true"
+                        android:singleLine="true"
+                        android:textColor="@color/text_primary"
+                        android:textSize="19sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvAudioMeta"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:ellipsize="end"
+                        android:lineSpacingExtra="2dp"
+                        android:maxLines="2"
                         android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
+                        android:textSize="14sp" />
                 </LinearLayout>
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/fabAudioPlayPause"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:contentDescription="@string/play_audio"
-                    app:backgroundTint="@color/primary"
-                    app:fabSize="normal"
-                    app:srcCompat="@drawable/ic_play_circle"
-                    app:tint="@color/white" />
+                    android:layout_marginHorizontal="36dp"
+                    android:layout_marginTop="10dp"
+                    app:cardBackgroundColor="@android:color/transparent"
+                    app:cardCornerRadius="22dp"
+                    app:cardElevation="4dp"
+                    app:strokeColor="#40FFFFFF"
+                    app:strokeWidth="1dp">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_audio_album"
+                        android:minHeight="160dp">
+
+                        <ImageView
+                            android:id="@+id/ivAudioArt"
+                            android:layout_width="84dp"
+                            android:layout_height="84dp"
+                            android:layout_gravity="center"
+                            android:alpha="0.95"
+                            android:contentDescription="@string/preview_audio"
+                            android:src="@drawable/ic_music_note"
+                            app:tint="@color/white" />
+                    </FrameLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:minHeight="4dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="20dp"
+                    android:paddingBottom="16dp">
+
+                    <SeekBar
+                        android:id="@+id/sbAudio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="36dp"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="0dp"
+                        android:progressBackgroundTint="@color/divider_light"
+                        android:progressTint="@color/primary"
+                        android:thumbTint="@color/primary" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-2dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvAudioCurrent"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-medium"
+                            android:text="0:00"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tvAudioDuration"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-medium"
+                            android:text="0:00"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAudioSkipBack"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="72dp"
+                            android:text="@string/audio_skip_back"
+                            android:textColor="@color/primary"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            app:rippleColor="#305D7DF8" />
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/fabAudioPlayPause"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="12dp"
+                            android:contentDescription="@string/play_audio"
+                            app:backgroundTint="@color/primary"
+                            app:fabCustomSize="64dp"
+                            app:maxImageSize="34dp"
+                            app:srcCompat="@drawable/ic_play_circle"
+                            app:tint="@color/white" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAudioSkipForward"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="72dp"
+                            android:text="@string/audio_skip_forward"
+                            android:textColor="@color/primary"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            app:rippleColor="#305D7DF8" />
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/btnAudioRepeat"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="4dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/audio_repeat"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_repeat" />
+                </LinearLayout>
             </LinearLayout>
 
             <ImageView
@@ -155,6 +268,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
+        android:id="@+id/detailMetadataSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
