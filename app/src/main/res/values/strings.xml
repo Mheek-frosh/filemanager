@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">File Manager</string>
+    <string name="search_hint">Search file...</string>
+    <string name="new_files">New Files</string>
+    <string name="today_label">Today</string>
+    <string name="login">Login</string>
+    <string name="create_account">Create Account</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login_failed">Invalid email or password</string>
+    <string name="file_details">File Details</string>
+    <string name="nav_drawer_open">Open navigation drawer</string>
+    <string name="drawer_subtitle">Browse files quickly</string>
+    <string name="drawer_home">Home</string>
+    <string name="drawer_pictures">Pictures</string>
+    <string name="drawer_videos">Videos</string>
+    <string name="drawer_music">Music</string>
+    <string name="drawer_documents">Documents</string>
+    <string name="drawer_downloads">Downloads</string>
+    <string name="drawer_zip">Zip files</string>
+    <string name="drawer_apps">Apps</string>
+    <string name="drawer_storage_section">Storage</string>
+    <string name="drawer_internal">Internal storage</string>
+    <string name="drawer_sd">SD card</string>
+    <string name="items_count">%1$d items</string>
+    <string name="back">Back</string>
+    <string name="browse_category_subtitle">Media and files on this device</string>
+    <string name="sd_not_available">No SD card is mounted</string>
+    <string name="loading_files">Loading…</string>
+</resources>

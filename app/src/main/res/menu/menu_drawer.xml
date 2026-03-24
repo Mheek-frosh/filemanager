@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="@string/drawer_home" />
+        <item
+            android:id="@+id/nav_pictures"
+            android:icon="@drawable/ic_image"
+            android:title="@string/drawer_pictures" />
+        <item
+            android:id="@+id/nav_videos"
+            android:icon="@drawable/ic_play_circle"
+            android:title="@string/drawer_videos" />
+        <item
+            android:id="@+id/nav_music"
+            android:icon="@drawable/ic_music_note"
+            android:title="@string/drawer_music" />
+        <item
+            android:id="@+id/nav_documents"
+            android:icon="@drawable/ic_description"
+            android:title="@string/drawer_documents" />
+        <item
+            android:id="@+id/nav_downloads"
+            android:icon="@drawable/ic_download"
+            android:title="@string/drawer_downloads" />
+        <item
+            android:id="@+id/nav_zip"
+            android:icon="@drawable/ic_folder_zip"
+            android:title="@string/drawer_zip" />
+        <item
+            android:id="@+id/nav_apps"
+            android:icon="@drawable/ic_apps"
+            android:title="@string/drawer_apps" />
+    </group>
+    <item android:title="@string/drawer_storage_section">
+        <menu>
+            <item
+                android:id="@+id/nav_internal_storage"
+                android:icon="@drawable/ic_phone_android"
+                android:title="@string/drawer_internal" />
+            <item
+                android:id="@+id/nav_sd_card"
+                android:icon="@drawable/ic_sd_card"
+                android:title="@string/drawer_sd" />
+        </menu>
+    </item>
+</menu>

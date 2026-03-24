@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="74dp"
+    android:orientation="horizontal"
+    android:paddingVertical="6dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:cardBackgroundColor="#F6F7FA"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="0dp">
+
+        <ImageView
+            android:id="@+id/ivFileType"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_description" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvMeta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivMore"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_more_vert" />
+</LinearLayout>
