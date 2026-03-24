@@ -48,4 +48,21 @@
     <string name="prop_size">Size: %1$s</string>
     <string name="prop_path">Location: %1$s</string>
     <string name="prop_mime">MIME: %1$s</string>
+    <string name="thumbnail">Thumbnail</string>
+    <string name="more_options">More options</string>
+    <string name="badge_system">System</string>
+    <string name="badge_user">User</string>
+    <string name="photos_subtitle">All photos on this device</string>
+    <string name="videos_subtitle">All videos on this device</string>
+    <string name="apps_subtitle">All installed applications</string>
+    <string name="photos_count">%1$d photos</string>
+    <string name="videos_count">%1$d videos</string>
+    <string name="apps_count">%1$d applications</string>
+    <string name="preview_image">Image preview</string>
+    <string name="preview_video">Video playback</string>
+    <string name="preview_audio">Audio playback</string>
+    <string name="audio_now_playing">Now playing</string>
+    <string name="play_audio">Play or pause audio</string>
+    <string name="video_playback_failed">Could not play this video</string>
+    <string name="audio_playback_failed">Could not play this audio file</string>
 </resources>

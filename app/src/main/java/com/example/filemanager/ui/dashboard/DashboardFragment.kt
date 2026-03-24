@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filemanager.MainActivity
 import com.example.filemanager.R
 import com.example.filemanager.databinding.FragmentDashboardBinding
+import com.example.filemanager.ui.files.FileAdapter
 import com.example.filemanager.utils.FileMenuHelper
 import com.example.filemanager.utils.applySystemBarPadding
 import dagger.hilt.android.AndroidEntryPoint

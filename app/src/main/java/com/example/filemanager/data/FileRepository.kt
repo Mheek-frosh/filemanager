@@ -2,6 +2,7 @@ package com.example.filemanager.data
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.MediaStore
 import com.example.filemanager.R
@@ -25,9 +26,9 @@ class FileRepository @Inject constructor(
     }
 
     fun getFilesForCategory(categoryId: String): List<FileItem> {
-        return when (categoryId) {
-            "pictures" -> queryImages(500)
-            "videos" -> queryVideos(500)
+        val list = when (categoryId) {
+            "pictures" -> queryImages(MEDIA_QUERY_LIMIT)
+            "videos" -> queryVideos(MEDIA_QUERY_LIMIT)
             "music" -> queryAudio(500)
             "documents" -> queryDocuments(500)
             "zip" -> queryZipFiles(500)
@@ -35,10 +36,14 @@ class FileRepository @Inject constructor(
             "apps" -> getInstalledApps()
             "all" -> listFilesInDirectory(FileRepositoryHelper.primaryExternalPath())
             else -> getRecentFiles(200)
-        }.sortedWith(
-            compareByDescending<FileItem> { it.dateAddedSeconds }
-                .thenBy { it.name.lowercase() }
-        )
+        }
+        return when (categoryId) {
+            "apps" -> list
+            else -> list.sortedWith(
+                compareByDescending<FileItem> { it.dateAddedSeconds }
+                    .thenBy { it.name.lowercase() }
+            )
+        }
     }
 
     fun listFilesInDirectory(path: String): List<FileItem> {
@@ -237,15 +242,19 @@ class FileRepository @Inject constructor(
 
     private fun getInstalledApps(): List<FileItem> {
         val pm = context.packageManager
-        val apps = pm.getInstalledApplications(0)
+        val flags = PackageManager.GET_META_DATA or PackageManager.MATCH_ALL
+        val apps = runCatching { pm.getInstalledApplications(flags) }.getOrElse {
+            pm.getInstalledApplications(PackageManager.GET_META_DATA)
+        }
         return apps
-            .filter { (it.flags and ApplicationInfo.FLAG_SYSTEM) == 0 }
+            .distinctBy { it.packageName }
             .map { app ->
-                val label = pm.getApplicationLabel(app).toString()
+                val label = runCatching { pm.getApplicationLabel(app).toString() }.getOrElse { app.packageName }
+                val isSystem = (app.flags and ApplicationInfo.FLAG_SYSTEM) != 0
                 FileItem(
                     id = app.uid.toLong() + app.packageName.hashCode(),
                     name = label,
-                    type = "APP",
+                    type = if (isSystem) "APP_SYSTEM" else "APP_USER",
                     sizeBytes = 0L,
                     dateAddedSeconds = 0L,
                     contentUri = Uri.parse("package:${app.packageName}"),
@@ -256,6 +265,10 @@ class FileRepository @Inject constructor(
                 )
             }
             .sortedBy { it.name.lowercase() }
+    }
+
+    companion object {
+        private const val MEDIA_QUERY_LIMIT = 10_000
     }
 }
 
