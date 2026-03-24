@@ -64,6 +64,10 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             )
         )
     }
+    private val stopRefreshRunnable = Runnable {
+        _binding?.swipeRefresh?.isRefreshing = false
+    }
+
     private val fileAdapter = FileAdapter(
         onClick = { file ->
             val action = DashboardFragmentDirections.actionDashboardFragmentToFileDetailFragment(
@@ -109,6 +113,15 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         binding.rvFiles.layoutManager = LinearLayoutManager(requireContext())
         binding.rvFiles.adapter = fileAdapter
 
+        binding.swipeRefresh.setColorSchemeResources(R.color.primary, R.color.primary_dark)
+        binding.swipeRefresh.setProgressBackgroundColorSchemeResource(R.color.surface)
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.loadRecentFiles()
+            viewModel.refreshStorage()
+            binding.swipeRefresh.removeCallbacks(stopRefreshRunnable)
+            binding.swipeRefresh.postDelayed(stopRefreshRunnable, 380)
+        }
+
         viewModel.storageCards.observe(viewLifecycleOwner) { storageAdapter.submitList(it) }
         categoryAdapter.submitList(viewModel.categories)
         viewModel.recentFiles.observe(viewLifecycleOwner) { fileAdapter.submitList(it.take(3)) }
@@ -138,6 +151,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     }
 
     override fun onDestroyView() {
+        _binding?.swipeRefresh?.removeCallbacks(stopRefreshRunnable)
         super.onDestroyView()
         _binding = null
     }

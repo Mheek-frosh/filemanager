@@ -29,6 +29,7 @@
     <string name="browse_category_subtitle">Media and files on this device</string>
     <string name="sd_not_available">No SD card is mounted</string>
     <string name="loading_files">Loading…</string>
+    <string name="pull_to_refresh">Pull down to refresh</string>
     <string name="profile">Profile</string>
     <string name="action_share">Share</string>
     <string name="action_rename">Rename</string>
