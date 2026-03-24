@@ -29,4 +29,23 @@
     <string name="browse_category_subtitle">Media and files on this device</string>
     <string name="sd_not_available">No SD card is mounted</string>
     <string name="loading_files">Loading…</string>
+    <string name="profile">Profile</string>
+    <string name="action_share">Share</string>
+    <string name="action_rename">Rename</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_properties">Properties</string>
+    <string name="action_not_available">This action isn\'t available for this item</string>
+    <string name="delete_confirm_message">Delete \"%1$s\"? This cannot be undone.</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="renamed_ok">File renamed</string>
+    <string name="rename_failed">Couldn\'t rename</string>
+    <string name="deleted_ok">Deleted</string>
+    <string name="delete_failed">Couldn\'t delete</string>
+    <string name="prop_name">Name: %1$s</string>
+    <string name="prop_type">Type: %1$s</string>
+    <string name="prop_size">Size: %1$s</string>
+    <string name="prop_path">Location: %1$s</string>
+    <string name="prop_mime">MIME: %1$s</string>
 </resources>

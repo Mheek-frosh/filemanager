@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filemanager.MainActivity
 import com.example.filemanager.R
 import com.example.filemanager.databinding.FragmentDashboardBinding
+import com.example.filemanager.utils.FileMenuHelper
 import com.example.filemanager.utils.applySystemBarPadding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,16 +44,23 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             )
         )
     }
-    private val fileAdapter = FileAdapter { file ->
-        val action = DashboardFragmentDirections.actionDashboardFragmentToFileDetailFragment(
-            fileName = file.name,
-            fileSize = file.sizeBytes,
-            fileType = file.type,
-            fileUri = file.contentUri?.toString().orEmpty(),
-            mimeType = file.mimeType.orEmpty()
-        )
-        findNavController().navigate(action)
-    }
+    private val fileAdapter = FileAdapter(
+        onClick = { file ->
+            val action = DashboardFragmentDirections.actionDashboardFragmentToFileDetailFragment(
+                fileName = file.name,
+                fileSize = file.sizeBytes,
+                fileType = file.type,
+                fileUri = file.contentUri?.toString().orEmpty(),
+                mimeType = file.mimeType.orEmpty()
+            )
+            findNavController().navigate(action)
+        },
+        onMoreClick = { item, anchor ->
+            FileMenuHelper.show(this, anchor, item) {
+                viewModel.loadRecentFiles()
+            }
+        }
+    )
 
     private val permissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()

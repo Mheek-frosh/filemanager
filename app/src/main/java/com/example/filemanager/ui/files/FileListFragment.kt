@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.filemanager.R
 import com.example.filemanager.databinding.FragmentFileListBinding
 import com.example.filemanager.ui.dashboard.FileAdapter
+import com.example.filemanager.utils.FileMenuHelper
 import com.example.filemanager.utils.applySystemBarPadding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,26 +20,33 @@ class FileListFragment : Fragment(R.layout.fragment_file_list) {
     private val binding get() = _binding!!
     private val args: FileListFragmentArgs by navArgs()
     private val viewModel: FilesViewModel by viewModels()
-    private val adapter = FileAdapter { file ->
-        if (file.isDirectory && file.localPath != null) {
-            findNavController().navigate(
-                FileListFragmentDirections.actionFileListFragmentSelf(
-                    categoryId = "browse",
-                    categoryTitle = file.name,
-                    storageRootPath = file.localPath!!
+    private val adapter = FileAdapter(
+        onClick = { file ->
+            if (file.isDirectory && file.localPath != null) {
+                findNavController().navigate(
+                    FileListFragmentDirections.actionFileListFragmentSelf(
+                        categoryId = "browse",
+                        categoryTitle = file.name,
+                        storageRootPath = file.localPath!!
+                    )
                 )
-            )
-            return@FileAdapter
+            } else {
+                val action = FileListFragmentDirections.actionFileListFragmentToFileDetailFragment(
+                    fileName = file.name,
+                    fileSize = file.sizeBytes,
+                    fileType = file.type,
+                    fileUri = file.contentUri?.toString().orEmpty(),
+                    mimeType = file.mimeType.orEmpty()
+                )
+                findNavController().navigate(action)
+            }
+        },
+        onMoreClick = { item, anchor ->
+            FileMenuHelper.show(this, anchor, item) {
+                viewModel.load(args.categoryId, args.storageRootPath)
+            }
         }
-        val action = FileListFragmentDirections.actionFileListFragmentToFileDetailFragment(
-            fileName = file.name,
-            fileSize = file.sizeBytes,
-            fileType = file.type,
-            fileUri = file.contentUri?.toString().orEmpty(),
-            mimeType = file.mimeType.orEmpty()
-        )
-        findNavController().navigate(action)
-    }
+    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

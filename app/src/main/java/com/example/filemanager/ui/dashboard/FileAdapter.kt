@@ -1,6 +1,7 @@
 package com.example.filemanager.ui.dashboard
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -9,7 +10,8 @@ import com.example.filemanager.model.FileItem
 import com.example.filemanager.utils.FileFormatUtils
 
 class FileAdapter(
-    private val onClick: (FileItem) -> Unit
+    private val onClick: (FileItem) -> Unit,
+    private val onMoreClick: (FileItem, View) -> Unit
 ) : RecyclerView.Adapter<FileAdapter.FileViewHolder>() {
     private val items = mutableListOf<FileItem>()
 
@@ -64,7 +66,7 @@ class FileAdapter(
                 }
             }
             binding.root.setOnClickListener { onClick(item) }
-            binding.ivMore.setOnClickListener { }
+            binding.ivMore.setOnClickListener { v -> onMoreClick(item, v) }
         }
     }
 }
