@@ -74,4 +74,18 @@
     <string name="play_audio">Play or pause audio</string>
     <string name="video_playback_failed">Could not play this video</string>
     <string name="audio_playback_failed">Could not play this audio file</string>
+    <string name="dashboard_tab_recent">Recent</string>
+    <string name="dashboard_tab_starred">Starred</string>
+    <string name="dashboard_tab_offline">Offline</string>
+    <string name="dashboard_filter_all">All</string>
+    <string name="dashboard_filter_viewed">Viewed</string>
+    <string name="dashboard_filter_saved">Saved</string>
+    <string name="dashboard_filter_uploaded">Uploaded</string>
+    <string name="dashboard_filter_scanned">Scanned</string>
+    <string name="dashboard_nav_files">Files</string>
+    <string name="dashboard_nav_share">Share</string>
+    <string name="dashboard_nav_my">My</string>
+    <string name="dashboard_add">Add</string>
+    <string name="dashboard_empty">No files in this section.</string>
+    <string name="dashboard_share_hint">Share section coming soon</string>
 </resources>
